@@ -23,9 +23,9 @@ gsap.registerPlugin(ScrollTrigger);
 document.addEventListener('DOMContentLoaded', () => {
 
     const pagePath = window.location.pathname;
-    const isHomePage = pagePath.endsWith('index.html') || pagePath.endsWith('/');
-    const isWorkPage = pagePath.endsWith('work.html');
-    const isProjectPage = pagePath.endsWith('project.html');
+    const isHomePage = pagePath === '/' || pagePath.includes('index') || pagePath.length <= 1;
+    const isWorkPage = pagePath.includes('work');
+    const isProjectPage = pagePath.includes('project');
 
     // --- SHARED: Loader ---
 
