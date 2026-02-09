@@ -202,52 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (isProjectPage) {
-        const params = new URLSearchParams(window.location.search);
-        let id = params.get('id');
-
-        // Fallback to first project if no ID (Dummy Content)
-        if (!id && typeof portfolioData !== 'undefined' && portfolioData.length > 0) {
-            id = portfolioData[0].id;
-        }
-
-        if (typeof portfolioData !== 'undefined' && id) {
-            const project = portfolioData.find(p => p.id === id);
-            if (project) {
-                // Populate Content
-                document.title = `${project.title} | NikhilPokar`;
-                const heroImg = document.getElementById('p-hero-img');
-                if (heroImg) heroImg.src = project.heroImage;
-
-                const catEl = document.getElementById('p-category');
-                if (catEl) catEl.textContent = project.category;
-
-                const titleEl = document.getElementById('p-title');
-                if (titleEl) titleEl.textContent = project.title;
-
-                const challEl = document.getElementById('p-challenge');
-                if (challEl) challEl.textContent = project.challenge;
-
-                const servEl = document.getElementById('p-services');
-                if (servEl) servEl.textContent = project.category;
-
-                const solEl = document.getElementById('p-solution');
-                if (solEl) solEl.textContent = project.solution;
-
-                const impEl = document.getElementById('p-impact');
-                if (impEl) impEl.textContent = project.impact;
-
-                // Next Project Logic
-                const currentIndex = portfolioData.findIndex(p => p.id === id);
-                const nextIndex = (currentIndex + 1) % portfolioData.length;
-                const nextProject = portfolioData[nextIndex];
-
-                const nextTitleEl = document.getElementById('p-next-title');
-                if (nextTitleEl) nextTitleEl.textContent = nextProject.title;
-
-                const nextLinkEl = document.getElementById('p-next-link');
-                if (nextLinkEl) nextLinkEl.href = `project.html?id=${nextProject.id}`;
-            }
-        }
+        // Static Content is already loaded.
+        // We just need to handle animations or specific interactions if any.
+        console.log('Project page loaded (Static).');
     }
 
     // Universal Link/Nav Logic can go here (menu toggles etc)

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Retail Chain | NikhilPokar</title>
+    <meta name="description" content="Project case study.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Manrope:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/style.css">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body class="loading">
+
+    <!-- WebGL Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <div class="loader">
+        <div class="loader-text">NikhilPokar</div>
+    </div>
+
+    <!-- Smooth Wrapper for Lenis -->
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <header class="header">
+                <div class="container fluid">
+                    <a href="/" class="logo">NP<span class="dot">.</span></a>
+                    <button class="menu-btn">
+                        <span class="text">Menu</span>
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+                </div>
+            </header>
+            <nav class="overlay-nav">
+                <ul>
+                    <li><a href="/" class="nav-item">Home</a></li>
+                    <li><a href="/#services" class="nav-item">Services</a></li>
+                    <li><a href="/projects/" class="nav-item">All Projects</a></li>
+                    <li><a href="/#contact" class="nav-item">Contact</a></li>
+                </ul>
+            </nav>
+
+            <main class="project-detail-main">
+
+                <div class="project-hero-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&auto=format&fit=crop" alt="Urban Retail Chain" id="p-hero-img" class="parallax-img">
+                </div>
+
+                <div class="container">
+                    <div class="project-header">
+                        <span id="p-category" class="cat">Retail</span>
+                        <h1 id="p-title" class="split-heading">Urban Retail Chain</h1>
+                    </div>
+
+                    <div class="project-content-grid">
+                        <div class="meta-block">
+                            <span class="label">Services</span>
+                            <p id="p-services">Retail</p>
+                        </div>
+
+                        <div class="narrative-block">
+                            <h3>The Challenge</h3>
+                            <p id="p-challenge">Discrepancies between physical inventory and books were causing massive year-end write-offs across 15 franchise outlets.</p>
+                            <br><br>
+
+                            <h3>The Solution</h3>
+                            <p id="p-solution">Introduced perpetual inventory tracking procedures and conducted surprise quarterly audits.</p>
+                            <br><br>
+
+                            <h3>The Impact</h3>
+                            <p id="p-impact" class="impact-text">Shrinkage reduced by 75% within the first year, directly adding to the bottom line.</p>
+                        </div>
+                    </div>
+
+                    <div class="next-project">
+                        <span class="label">Next Project</span>
+                        <a href="#" id="p-next-link" class="next-link" href="/projects/solar-power-inc">
+                            <h2 id="p-next-title">Solar Power Inc</h2>
+                        </a>
+                    </div>
+                </div>
+
+            </main>
+
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-left">
+                            <span class="brand">NikhilPokar.</span>
+                            <span class="copyright">&copy; 2024 All rights reserved.</span>
+                        </div>
+                        <div class="footer-right">
+                            <a href="#" class="social-link">LinkedIn</a>
+                            <a href="#" class="social-link">Twitter</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div> <!-- smooth-content -->
+    </div> <!-- smooth-wrapper -->
+
+    <script src="/data.js"></script>
+    <script src="/script.js"></script>
+</body>
+
+</html>
