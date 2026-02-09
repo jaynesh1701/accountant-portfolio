@@ -22,10 +22,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const pagePath = window.location.pathname;
-    const isHomePage = pagePath === '/' || pagePath.includes('index') || pagePath.length <= 1;
-    const isWorkPage = pagePath.includes('work');
-    const isProjectPage = pagePath.includes('project');
+    // --- PAGE DETECTION (Feature Detection) ---
+    const isHomePage = document.querySelector('.hero-title-large, .hero-title') !== null;
+    const isWorkPage = document.getElementById('work-grid') !== null;
+    const isProjectPage = document.querySelector('.project-detail-main') !== null;
 
     // --- SHARED: Loader ---
 
