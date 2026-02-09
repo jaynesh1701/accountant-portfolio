@@ -105,7 +105,7 @@ const portfolioData = [
         id: 'nextgen-edu',
         title: 'NextGen Education',
         category: 'Education',
-        heroImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1600&auto=format&fit=crop',
+        heroImage: 'https://plus.unsplash.com/premium_photo-1710708048497-5ec29c51580b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         summary: 'Fee reconciliation and trust compliance.',
         challenge: 'Managing fee collections from 2000+ students and ensuring compliance with charitable trust laws.',
         solution: 'Digitized the fee collection process and regularized trust filings.',
