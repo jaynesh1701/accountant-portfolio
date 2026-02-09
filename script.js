@@ -93,21 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
         // Init Shader Background - Enabled for Hero Redesign
         initShader();
 
-        // Horizontal Scroll for Services (Desktop only)
-        if (window.innerWidth > 1024) {
-            const sections = gsap.utils.toArray('.service-card');
-
-            gsap.to(sections, {
-                xPercent: -100 * (sections.length - 1),
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".horizontal-scroll-wrapper",
-                    pin: true,
-                    scrub: 1,
-                    end: "+=3000",
-                }
-            });
-        }
+        // Grid Reveal for Services
+        gsap.from('.service-card', {
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            scrollTrigger: {
+                trigger: '.expertise-grid',
+                start: 'top 80%'
+            }
+        });
 
         // Text Reveals
         const splitTexts = document.querySelectorAll('.split-heading');
