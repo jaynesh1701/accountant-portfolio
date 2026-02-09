@@ -1,333 +1,285 @@
-// // Initialize Lenis
-// const lenis = new Lenis({
-//     duration: 1.2,
-//     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-//     direction: 'vertical',
-//     gestureDirection: 'vertical',
-//     smooth: true,
-//     mouseMultiplier: 1,
-//     smoothTouch: false,
-//     touchMultiplier: 2,
-// });
+/**
+ * PortfolioApp - Main Application Logic
+ * Handles animations, routing context, and WebGL background.
+ */
 
-// function raf(time) {
-//     lenis.raf(time);
-//     requestAnimationFrame(raf);
-// }
+const PortfolioApp = {
+    init() {
+        this.dom = {
+            body: document.body,
+            menuBtn: document.querySelector('.menu-btn'),
+            nav: document.querySelector('.overlay-nav'),
+            header: document.querySelector('.header'),
+        };
 
-//requestAnimationFrame(raf);
+        this.initLenis();
+        this.initGSAP();
+        this.initLoader();
+        this.initNav();
+        this.initAnimations();
 
-// Initialize GSAP
-gsap.registerPlugin(ScrollTrigger);
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    // --- PAGE DETECTION (Feature Detection) ---
-    const isHomePage = document.querySelector('.hero-title-large, .hero-title') !== null;
-    const isWorkPage = document.getElementById('work-grid') !== null;
-    const isProjectPage = document.querySelector('.project-detail-main') !== null;
-
-    // --- SHARED: Loader ---
-
-    // Loader Animation
-    const tlLoader = gsap.timeline({
-        onComplete: () => {
-            document.body.classList.remove('loading');
+        // Only init WebGL on desktop/tablet to save battery on mobile
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            this.initShader();
         }
-    });
+    },
 
-    tlLoader.to('.loader-text', {
-        opacity: 1,
-        duration: 1,
-        y: 0,
-        ease: 'power3.out'
-    })
-        .to('.loader', {
-            yPercent: -100,
-            duration: 1.5,
-            ease: 'power4.inOut',
-            delay: 0.5
+    initLenis() {
+        if (typeof Lenis === 'undefined') return;
+        this.lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true,
         });
 
-    if (isHomePage) {
-        tlLoader.from('.hero-title span', {
-            y: 100,
-            opacity: 0,
-            duration: 1,
-            stagger: 0.1,
-            ease: 'power3.out'
-        }, "-=1")
-    }
+        const raf = (time) => {
+            this.lenis.raf(time);
+            requestAnimationFrame(raf);
+        };
+        requestAnimationFrame(raf);
+    },
 
-    // --- SHARED: Navigation ---
-    const menuBtn = document.querySelector('.menu-btn');
-    const overlayNav = document.querySelector('.overlay-nav');
-    const navLinks = document.querySelectorAll('.nav-item');
+    initGSAP() {
+        if (typeof gsap === 'undefined') return;
+        gsap.registerPlugin(ScrollTrigger);
+    },
 
-    if (menuBtn && overlayNav) {
-        menuBtn.addEventListener('click', () => {
-            overlayNav.classList.toggle('active');
-
-            // Toggle menu text
-            const btnText = menuBtn.querySelector('.text');
-            if (overlayNav.classList.contains('active')) {
-                btnText.textContent = "Close";
-            } else {
-                btnText.textContent = "Menu";
-            }
+    initLoader() {
+        const tl = gsap.timeline({
+            onComplete: () => this.dom.body.classList.remove('loading')
         });
 
-        navLinks.forEach(link => {
+        tl.to('.loader-text', { opacity: 1, duration: 1, y: 0, ease: 'power3.out' })
+            .to('.loader', { yPercent: -100, duration: 1.2, ease: 'power4.inOut', delay: 0.5 });
+
+        // Hero Reveal
+        if (document.querySelector('.hero-title-large')) {
+            tl.from('.hero-title-large .reveal-text', {
+                y: 100, opacity: 0, duration: 1, stagger: 0.1, ease: 'power3.out'
+            }, "-=0.8");
+
+            tl.from('.hero-meta', { opacity: 0, y: 20, duration: 1 }, "-=0.8");
+        }
+    },
+
+    initNav() {
+        if (!this.dom.menuBtn || !this.dom.nav) return;
+
+        this.dom.menuBtn.addEventListener('click', () => {
+            this.dom.nav.classList.toggle('active');
+            const text = this.dom.menuBtn.querySelector('.text');
+            if (text) text.textContent = this.dom.nav.classList.contains('active') ? 'Close' : 'Menu';
+        });
+
+        // Close on link click
+        document.querySelectorAll('.nav-item').forEach(link => {
             link.addEventListener('click', () => {
-                overlayNav.classList.remove('active');
-                if (menuBtn.querySelector('.text')) {
-                    menuBtn.querySelector('.text').textContent = "Menu";
+                this.dom.nav.classList.remove('active');
+                if (this.dom.menuBtn.querySelector('.text')) {
+                    this.dom.menuBtn.querySelector('.text').textContent = "Menu";
                 }
             });
         });
-    }
 
-    // --- PAGE SPECIFIC LOGIC ---
-
-    if (isHomePage) {
-        // Init Shader Background - Enabled for Hero Redesign
-        initShader();
-
-        // Grid Reveal for Services
-        gsap.from('.service-card', {
-            y: 50,
-            opacity: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            scrollTrigger: {
-                trigger: '.expertise-grid',
-                start: 'top 80%'
-            }
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) this.dom.header.classList.add('scrolled');
+            else this.dom.header.classList.remove('scrolled');
         });
+    },
 
-        // Text Reveals
-        const splitTexts = document.querySelectorAll('.split-heading');
-        splitTexts.forEach(text => {
-            gsap.from(text, {
-                y: 50,
+    initAnimations() {
+        // Expertise Grid Reveal (Vertical Stagger)
+        const cards = document.querySelectorAll('.service-card');
+        if (cards.length > 0) {
+            gsap.from(cards, {
+                y: 60,
                 opacity: 0,
-                duration: 1,
+                duration: 0.8,
+                stagger: 0.1,
                 scrollTrigger: {
-                    trigger: text,
-                    start: 'top 80%',
+                    trigger: '.expertise-grid',
+                    start: 'top 85%',
                     toggleActions: 'play none none reverse'
                 }
             });
-        });
+        }
 
-        // Parallax Images
-        const parallaxImgs = document.querySelectorAll('.featured-img-wrapper img, .parallax-img img');
-        parallaxImgs.forEach(img => {
-            gsap.to(img, {
-                yPercent: 10, // Subtle parallax
-                ease: "none",
+        // Section Headers
+        const headings = document.querySelectorAll('.split-heading');
+        headings.forEach(h => {
+            gsap.from(h, {
+                y: 40, opacity: 0, duration: 1,
                 scrollTrigger: {
-                    trigger: img.parentElement,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
+                    trigger: h,
+                    start: 'top 85%'
                 }
             });
         });
 
         // Magnetic Buttons
         const magnets = document.querySelectorAll('.btn-magnetic');
-        magnets.forEach(magnet => {
-            magnet.addEventListener('mousemove', (e) => {
-                const rect = magnet.getBoundingClientRect();
+        magnets.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-
-                gsap.to(magnet, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.3,
-                    ease: "power2.out"
-                });
-                gsap.to(magnet.querySelector('.btn-text'), {
-                    x: x * 0.2,
-                    y: y * 0.2,
-                    duration: 0.3
-                });
+                gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3 });
+                const txt = btn.querySelector('.btn-text');
+                if (txt) gsap.to(txt, { x: x * 0.2, y: y * 0.2, duration: 0.3 });
             });
-
-            magnet.addEventListener('mouseleave', () => {
-                gsap.to(magnet, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
-                gsap.to(magnet.querySelector('.btn-text'), { x: 0, y: 0, duration: 0.5 });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1,0.3)' });
+                const txt = btn.querySelector('.btn-text');
+                if (txt) gsap.to(txt, { x: 0, y: 0, duration: 0.5 });
             });
         });
-    }
 
-    if (isWorkPage) {
-        const grid = document.getElementById('work-grid');
-        if (typeof portfolioData !== 'undefined' && grid) {
+        // Project Images Parallax
+        document.querySelectorAll('.featured-img-wrapper img').forEach(img => {
+            gsap.to(img, {
+                yPercent: 15,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: img.parentElement,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
+            });
+        });
+
+        // Work Page Grid
+        const workGrid = document.getElementById('work-grid');
+        if (workGrid && typeof portfolioData !== 'undefined') {
             portfolioData.forEach(item => {
                 const el = document.createElement('a');
                 el.className = 'work-item';
-                // Clean URL
                 el.href = `/projects/${item.id}`;
                 el.innerHTML = `
                     <div class="work-thumb">
-                        <img src="${item.heroImage}" alt="${item.title}">
+                        <img src="${item.heroImage}" alt="${item.title}" loading="lazy">
                     </div>
                     <span class="work-cat">${item.category}</span>
                     <h3 class="work-title">${item.title}</h3>
-                    <p class="work-summary">${item.summary}</p>
                 `;
-                grid.appendChild(el);
+                workGrid.appendChild(el);
             });
-            // refreshHoverables(); // Re-bind hover effects (Function not defined)
 
-            // Stagger reveal
             gsap.from('.work-item', {
-                y: 50,
-                opacity: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                scrollTrigger: {
-                    trigger: '.work-grid',
-                    start: 'top 80%'
-                }
+                y: 30, opacity: 0, duration: 0.6, stagger: 0.1,
+                scrollTrigger: { trigger: workGrid, start: 'top 80%' }
             });
         }
-    }
+    },
 
-    if (isProjectPage) {
-        // Static Content is already loaded.
-        // We just need to handle animations or specific interactions if any.
-        console.log('Project page loaded (Static).');
-    }
+    initShader() {
+        const canvas = document.getElementById('webgl-canvas');
+        if (!canvas || typeof THREE === 'undefined') return;
 
-    // Universal Link/Nav Logic can go here (menu toggles etc)
-});
+        try {
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 
-// Three.js Shader Implementation (Only calls if needed)
-function initShader() {
-    const canvas = document.getElementById('webgl-canvas');
-    if (!canvas) return;
+            const resize = () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            };
+            resize();
+            window.addEventListener('resize', () => {
+                resize();
+                if (uniforms) uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
+            });
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            const uniforms = {
+                time: { value: 0 },
+                resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                mouse: { value: new THREE.Vector2(0.5, 0.5) }
+            };
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            const material = new THREE.ShaderMaterial({
+                uniforms,
+                vertexShader: `
+                    varying vec2 vUv;
+                    void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
+                `,
+                // Subtle liquid grid shader
+                fragmentShader: `
+                    uniform float time;
+                    uniform vec2 resolution;
+                    uniform vec2 mouse;
+                    varying vec2 vUv;
+                    
+                    // Simple noise function
+                    float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+                    float noise(vec2 p) {
+                        vec2 i = floor(p);
+                        vec2 f = fract(p);
+                        f = f*f*(3.0-2.0*f);
+                        return mix(mix(hash(i + vec2(0.0,0.0)), hash(i + vec2(1.0,0.0)), f.x),
+                                   mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0,1.0)), f.x), f.y);
+                    }
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
+                    void main() {
+                        vec2 uv = vUv;
+                        // Aspect ratio correction
+                        vec2 aspect = vec2(resolution.x/resolution.y, 1.0);
+                        vec2 p = (uv - 0.5) * aspect;
+                        
+                        // Mouse interaction
+                        vec2 m = (mouse - 0.5) * aspect;
+                        float d = length(p - m);
+                        
+                        // Grid lines
+                        float gridScale = 20.0;
+                        float width = 0.05; // Line width
+                        
+                        // Distort grid based on noise and mouse
+                        float n = noise(p * 3.0 + time * 0.1);
+                        vec2 distort = vec2(n) * 0.05;
+                        
+                        // Ripple from mouse
+                        float ripple = sin(d * 20.0 - time * 2.0) * 0.02 * smoothstep(0.5, 0.0, d);
+                        
+                        vec2 gridUV = fract((uv + distort + ripple) * gridScale);
+                        
+                        float grid = step(1.0 - width, gridUV.x) + step(1.0 - width, gridUV.y);
+                        
+                        vec3 color = vec3(1.0); // White bg
+                        vec3 lineCol = vec3(0.06, 0.35, 0.23); // #10583A Green
+                        
+                        // Mix
+                        color = mix(color, lineCol, grid * 0.15); // Subtle grid lines
+                        
+                        // Mouse glow
+                        color = mix(color, lineCol, smoothstep(0.3, 0.0, d) * 0.1);
 
-    // Shader Code (Same as before)
-    const vertexShader = `
-        varying vec2 vUv;
-        void main() {
-            vUv = uv;
-            gl_Position = vec4(position, 1.0);
+                        gl_FragColor = vec4(color, 1.0);
+                    }
+                `
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                uniforms.time.value += 0.005;
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            window.addEventListener('mousemove', (e) => {
+                if (uniforms) uniforms.mouse.value.set(e.clientX / window.innerWidth, 1.0 - e.clientY / window.innerHeight);
+            });
+
+        } catch (e) {
+            console.warn("WebGL Init Failed:", e);
         }
-    `;
-
-    const fragmentShader = `
-        uniform float time;
-        uniform vec2 resolution;
-        uniform vec2 mouse;
-        varying vec2 vUv;
-
-        // Simplex 2D noise
-        vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
-        float snoise(vec2 v){
-            const vec4 C = vec4(0.211324865405187, 0.366025403784439,
-                    -0.577350269189626, 0.024390243902439);
-            vec2 i  = floor(v + dot(v, C.yy) );
-            vec2 x0 = v - i + dot(i, C.xx);
-            vec2 i1;
-            i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-            vec4 x12 = x0.xyxy + C.xxzz;
-            x12.xy -= i1;
-            i = mod(i, 289.0);
-            vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
-                + i.x + vec3(0.0, i1.x, 1.0 ));
-            vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
-            m = m*m ;
-            m = m*m ;
-            vec3 x = 2.0 * fract(p * C.www) - 1.0;
-            vec3 h = abs(x) - 0.5;
-            vec3 ox = floor(x + 0.5);
-            vec3 a0 = x - ox;
-            m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
-            vec3 g;
-            g.x  = a0.x  * x0.x  + h.x  * x0.y;
-            g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-            return 130.0 * dot(m, g);
-        }
-
-        void main() {
-            vec2 uv = vUv;
-            vec2 rw = resolution.xy / min(resolution.x, resolution.y);
-            vec2 p = (uv - 0.5) * rw;
-            float d = length(p - (mouse - 0.5) * rw);
-            float mDist = smoothstep(0.4, 0.0, d);
-            float noiseT = time * 0.2;
-            float n = snoise(p * 3.0 + vec2(noiseT));
-            float line1 = 0.002 / abs(p.y + sin(p.x * 4.0 + time * 0.5) * 0.2 + n * 0.1);
-            float line2 = 0.002 / abs(p.y + sin(p.x * 2.0 - time * 0.3) * 0.3);
-            
-            // Light Mode Colors
-            vec3 bg = vec3(1.0, 1.0, 1.0); // White Background
-            vec3 greenAccent = vec3(0.06, 0.35, 0.23); // #10583A (Forest Green)
-            vec3 lightSage = vec3(0.88, 0.90, 0.89); // #E0E5E2 (Light Sage)
-            
-            // Base background
-            vec3 color = bg;
-            
-            // Subtle Grid/Noise Texture
-            float grain = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
-            color -= grain * 0.05; // Slightly darken for texture
-            
-            // Lines (Green Accent)
-            color = mix(color, greenAccent, line1 * 0.8);
-            color = mix(color, greenAccent, line2 * 0.5);
-            
-            // Interaction Ripple (Darker Green)
-            color = mix(color, vec3(0.0, 0.2, 0.1), mDist * 0.3);
-            
-            gl_FragColor = vec4(color, 1.0);
-        }
-    `;
-
-    const uniforms = {
-        time: { value: 0 },
-        resolution: { value: new THREE.Vector2() },
-        mouse: { value: new THREE.Vector2(0.5, 0.5) }
-    };
-
-    const material = new THREE.ShaderMaterial({
-        vertexShader,
-        fragmentShader,
-        uniforms
-    });
-
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    const startTime = Date.now();
-    function animate() {
-        requestAnimationFrame(animate);
-        uniforms.time.value = (Date.now() - startTime) * 0.001;
-        renderer.render(scene, camera);
     }
-    animate();
+};
 
-    function onResize() {
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
-    }
-    window.addEventListener('resize', onResize);
-    onResize();
-
-    window.addEventListener('mousemove', (e) => {
-        uniforms.mouse.value.set(e.clientX / window.innerWidth, 1.0 - e.clientY / window.innerHeight);
-    });
-}
+document.addEventListener('DOMContentLoaded', () => PortfolioApp.init());
