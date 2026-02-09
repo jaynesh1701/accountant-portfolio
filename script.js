@@ -173,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
             portfolioData.forEach(item => {
                 const el = document.createElement('a');
                 el.className = 'work-item';
-                el.href = `project.html?id=${item.id}`;
+                // Clean URL
+                el.href = `/projects/${item.id}`;
                 el.innerHTML = `
                     <div class="work-thumb">
                         <img src="${item.heroImage}" alt="${item.title}">

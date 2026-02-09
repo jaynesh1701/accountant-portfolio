@@ -8,13 +8,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/index.html</loc>
-    <lastmod>2024-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/work.html</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -22,73 +16,73 @@
   
   <!-- Project Pages -->
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=kasumbo-movie</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/kasumbo-movie</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=abc-construction</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/abc-construction</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=tech-innovate</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/tech-innovate</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=green-logistics</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/green-logistics</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=urban-retail</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/urban-retail</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=solar-power-inc</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/solar-power-inc</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=global-exports</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/global-exports</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=med-care-hospital</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/med-care-hospital</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=elite-hospitality</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/elite-hospitality</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=nextgen-edu</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/nextgen-edu</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=agro-corp</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/agro-corp</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://endearing-tapioca-0a3172.netlify.app/project.html?id=fin-advisors</loc>
+    <loc>https://endearing-tapioca-0a3172.netlify.app/projects/fin-advisors</loc>
     <lastmod>2024-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

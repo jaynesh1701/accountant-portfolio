@@ -1,0 +1,9 @@
+
+# Netlify Redirect Rules
+# Syntax: /path  /destination  Status
+
+# Rewrite all /projects/:slug to /project.html
+/projects/*  /project.html  200
+
+# Ensure /projects goes to the list
+/projects/   /projects/index.html  200
